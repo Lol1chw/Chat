@@ -1,6 +1,6 @@
 import { useStorage } from '@vueuse/core'
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 
 export enum Themes {
   SYSTEM = 'system',
@@ -23,19 +23,17 @@ export const useThemeStore = defineStore('theme', () => {
       document.body.className = themeStorage.value
     }
   }
- 
+
   useDefaultTheme()
-  
+
   function toggleTheme() {
     document.body.className = themeStorage.value
     useDefaultTheme()
     console.log(themeStorage.value)
   }
 
-  function toggleDropdown () {
+  function toggleDropdown() {
     showDropdown.value = !showDropdown.value
   }
   return { themes, toggleTheme, showDropdown, toggleDropdown }
 })
-
-

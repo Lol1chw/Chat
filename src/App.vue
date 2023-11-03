@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import themeList from '@/components/themeList.vue'
-
 </script>
 
 <template>
-  <themeList/>
-<router-view />
+  <themeList />
+  <router-view />
 </template>
 
 <style scoped>

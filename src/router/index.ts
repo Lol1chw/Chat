@@ -16,14 +16,14 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: () => import('../views/LoginView.vue')
+      component: () => import('../views/LoginView.vue'),
+      meta: {
+        requiresAuth: false
+      }
     },
     {
       path: '/chat/:id',
       name: 'chat',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/ChatView.vue'),
       meta: {
         requiresAuth: true
@@ -34,9 +34,16 @@ const router = createRouter({
 
 router.beforeEach((to) => {
   const store = useAuthenticationStore()
-  if (to.meta.requiresAuth && !store.isAuth) {
+  const isAuth = store.isAuthentication.some((value) => value.isAuth)
+
+  if (to.meta.requiresAuth && !isAuth) {
     return '/'
   }
-})
 
+  if (!to.meta.requiresAuth && isAuth) {
+    return '/chat/0'
+  }
+
+  // Guard for logined users
+})
 export default router

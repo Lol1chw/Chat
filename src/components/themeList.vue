@@ -5,12 +5,11 @@ const store = useThemeStore()
 </script>
 
 <template>
-    <select v-model="store.themes" @change="store.toggleTheme">
-        <option :value="Themes.DARK" >{{ Themes.DARK }}</option>
-        <option :value="Themes.SYSTEM" >{{ Themes.SYSTEM }}</option>
-        <option :value="Themes.LIGHT" >{{ Themes.LIGHT }}</option>
-    </select>
+  <select v-model="store.themes" @change="store.toggleTheme">
+    <option :value="Themes.DARK">{{ Themes.DARK }}</option>
+    <option :value="Themes.SYSTEM">{{ Themes.SYSTEM }}</option>
+    <option :value="Themes.LIGHT">{{ Themes.LIGHT }}</option>
+  </select>
 </template>
 
-<style module>
-</style>
+<style module></style>

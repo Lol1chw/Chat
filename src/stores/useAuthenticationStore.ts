@@ -12,13 +12,20 @@ export const useAuthenticationStore = defineStore('authentication', () => {
   if (!users.value) {
     users.value = []
   }
-  
-  const isAuth = useStorage('isAut', true)
+
   const isAuthentication = useStorage('authentication', users)
 
   function addUser(data: User) {
     isAuthentication.value.push(data)
   }
 
-  return { isAuthentication, users, addUser, isAuth }
+  function logOut() {
+    const item = isAuthentication.value.find((value) => value.isAuth === true)
+
+    if (item) {
+      item.isAuth = false
+    }
+  }
+
+  return { isAuthentication, users, addUser, logOut }
 })

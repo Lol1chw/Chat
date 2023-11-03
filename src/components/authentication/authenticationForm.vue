@@ -4,10 +4,9 @@ import type { Invalid, User } from '@/types/auth'
 import { ref } from 'vue'
 import router from '@/router/index'
 
-
-const user = ref<User>({ name: '', password: '' })
-const invalid = ref<Invalid>({name: false, password: false})
-const helperText = ref<User>({name: '', password: ''})
+const user = ref<User>({ name: '', password: '', isAuth: false })
+const invalid = ref<Invalid>({ name: false, password: false })
+const helperText = ref<Omit<User, 'isAuth'>>({ name: '', password: '' })
 
 const store = useAuthenticationStore()
 
@@ -19,29 +18,24 @@ function submit(event: Event, mode: 'login' | 'register') {
   const foundName = store.isAuthentication.find((obj) => obj.name === user.value.name)
 
   if (mode === 'register') {
-      if (user.value.name.length < 2) {
-        invalid.value.name = true
-        helperText.value.name = 'The name must contain at least 2 characters'
-      }
-      else if (foundName) {
-        invalid.value.name = true
-        helperText.value.name = 'A user with this name is already registered'
-      }
-      else {
-        invalid.value.name = false
-        helperText.value.name = ''
-      }
-      if (user.value.password.length < 1) {
-        invalid.value.password = true
-        helperText.value.password = 'The password must contain at least 5 characters'
-      } 
-      else {
-        invalid.value.password = false
-        helperText.value.password = ''
-      }
-      if (!invalid.value.name 
-        && !invalid.value.password 
-        ) {
+    if (user.value.name.length < 2) {
+      invalid.value.name = true
+      helperText.value.name = 'The name must contain at least 2 characters'
+    } else if (foundName) {
+      invalid.value.name = true
+      helperText.value.name = 'A user with this name is already registered'
+    } else {
+      invalid.value.name = false
+      helperText.value.name = ''
+    }
+    if (user.value.password.length < 1) {
+      invalid.value.password = true
+      helperText.value.password = 'The password must contain at least 5 characters'
+    } else {
+      invalid.value.password = false
+      helperText.value.password = ''
+    }
+    if (!invalid.value.name && !invalid.value.password) {
       store.addUser(user.value)
       invalid.value.name = false
       router.push('/login')
@@ -50,28 +44,28 @@ function submit(event: Event, mode: 'login' | 'register') {
     if (!foundName) {
       invalid.value.name = true
       helperText.value.name = 'The user with this name does not exist'
-    } 
+    }
     if (user.value.password.length < 1) {
       invalid.value.password = true
       helperText.value.password = 'Incorrect password'
-    } 
-    else {
+    } else {
       invalid.value.password = false
       helperText.value.password = ''
     }
     if (foundName) {
       const data: User[] = JSON.parse(localStorage.getItem('authentication') as string)
-      for (const [_, value] of Object.entries(data)) {
+      for (const [key, value] of Object.entries(data)) {
         const compareName = value.name === user.value.name
         const comparePass = value.password === user.value.password
-        if(compareName && comparePass) {
+        const keyNumber = Number(key)
+        if (compareName && comparePass) {
           invalid.value.name = false
           invalid.value.password = false
           helperText.value.name = ''
           helperText.value.password = ''
+          store.isAuthentication[keyNumber].isAuth = true
           router.push('/chat/0')
-        }
-        else if (compareName && !comparePass) {
+        } else if (compareName && !comparePass) {
           invalid.value.password = true
           helperText.value.password = 'Incorrect password'
         }
@@ -85,7 +79,7 @@ function submit(event: Event, mode: 'login' | 'register') {
   <form :class="$style.Form">
     <label :class="$style.label">
       Name
-      <input v-model="user.name" :class="invalid.name && $style.Invalid"/>
+      <input v-model="user.name" :class="invalid.name && $style.Invalid" />
     </label>
     <p v-if="invalid" :class="invalid && $style.Error">
       {{ helperText.name }}
@@ -93,7 +87,7 @@ function submit(event: Event, mode: 'login' | 'register') {
 
     <label :class="$style.label">
       Password
-      <input v-model="user.password" :class="invalid.password && $style.Invalid"/>
+      <input v-model="user.password" :class="invalid.password && $style.Invalid" />
     </label>
     <p v-if="invalid" :class="invalid && $style.Error">
       {{ helperText.password }}
