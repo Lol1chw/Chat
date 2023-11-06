@@ -1,36 +1,21 @@
 <script setup lang="ts">
 import { useChatStore } from '@/stores/chat'
-import { ref } from 'vue'
 import type { Message } from '@/types/message'
-import MessageMenu from './messageMenu.vue';
-import { useMessageMenuStore } from '@/stores/messageMenu';
+import MessageMenu from './messageMenu.vue'
+import { useMessageMenuStore } from '@/stores/messageMenu'
+import { storeToRefs } from 'pinia'
 
 const { addMessage, deleteMessage, editMessage, messageStorage } = useChatStore()
+const chatStore = useChatStore()
+
 const store = useMessageMenuStore()
-
-const content = ref('')
-
-function sendMessage() {
-  addMessage(content.value)
-  content.value = ''
-}
-
-function handleEditMessage() {
-  if (store.selectedMessage) {
-    const newText = window.prompt('Enter new message text', store.selectedMessage.content)
-    if (newText !== null) {
-      editMessage(store.selectedMessage, newText)
-    }
-    store.showMessageMenu = false
-  }
-}
-
+const { content } = storeToRefs(chatStore)
 </script>
 
 <template>
   <div :class="$style.sendMessage">
-    <input v-model="content" @keyup.enter="sendMessage" />
-    <button :disabled="content.length < 1" @click="sendMessage">Send message</button>
+    <input v-model="content" @keyup.enter="addMessage" />
+    <button :disabled="content.length < 1" @click="addMessage">Send message</button>
   </div>
 
   <ul>
@@ -40,9 +25,10 @@ function handleEditMessage() {
       </li>
     </template>
   </ul>
-  <MessageMenu 
-  @delete-message="deleteMessage(store.selectedMessage as Message)"
-  @handle-edit-message="handleEditMessage"/>
+  <MessageMenu
+    @delete-message="deleteMessage(store.selectedMessage as Message)"
+    @handle-edit-message="editMessage"
+  />
 </template>
 
 <style module>

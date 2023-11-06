@@ -4,13 +4,16 @@ import { ref } from 'vue'
 import { useAuthenticationStore } from './useAuthenticationStore'
 import { useStorage } from '@vueuse/core'
 import type { RemovableRef } from '@vueuse/core'
+import { useMessageMenuStore } from './messageMenu'
 
 export const useChatStore = defineStore('chat', () => {
+  const content = ref('')
   const messages = ref<Message[]>(Array.from({ length: 1 }, createMessage))
+  const menuStore = useMessageMenuStore()
 
   const messageStorage = useStorage('messages', messages)
 
-  function createMessage(text: string): Message {
+  function createMessage(): Message {
     const storeAuth = useAuthenticationStore()
 
     const indexOfAuth = storeAuth.isAuthentication.findIndex((value) => value.isAuth === true)
@@ -20,13 +23,14 @@ export const useChatStore = defineStore('chat', () => {
     return {
       id: UUID,
       author: nameAuth,
-      content: text || 'hi',
+      content: content.value || 'hi',
       time: Date.now()
     }
   }
 
-  function addMessage(text: string) {
-    messages.value.push(createMessage(text))
+  function addMessage() {
+    messages.value.push(createMessage())
+    content.value = ''
   }
 
   function deleteMessage(message: Message) {
@@ -36,16 +40,22 @@ export const useChatStore = defineStore('chat', () => {
     }
   }
 
-  function editMessage(message: Message, newText: string) {
-    const index = messageStorage.value.indexOf(message)
-
-    messageStorage.value[index].content = newText
+  function editMessage() {
+    if (menuStore.selectedMessage) {
+      const newText = window.prompt('Enter new message text', menuStore.selectedMessage.content)
+      if (newText !== null) {
+        const index = messageStorage.value.indexOf(menuStore.selectedMessage)
+        messageStorage.value[index].content = newText
+      }
+    }
+    menuStore.showMessageMenu = false
   }
 
   return {
     messageStorage,
     addMessage,
     deleteMessage,
-    editMessage
+    editMessage,
+    content
   }
 })
