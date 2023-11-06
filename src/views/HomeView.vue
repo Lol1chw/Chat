@@ -5,7 +5,7 @@ import CreateAccount from '@/components/authentication/authenticationForm.vue'
 <template>
   <div>
     <div :class="$style.Links">
-      <RouterLink to="/" :class="$style['Links--active']">Register</RouterLink>
+      <RouterLink to="/">Register</RouterLink>
       <RouterLink to="/login">Log in</RouterLink>
     </div>
     <CreateAccount mode="register" helper-text="A user with this name is already registered" />
@@ -16,9 +16,5 @@ import CreateAccount from '@/components/authentication/authenticationForm.vue'
 .Links {
   display: flex;
   gap: 15px;
-}
-.Links--active {
-  font-size: 18px;
-  border-bottom: 2px solid brown;
 }
 </style>

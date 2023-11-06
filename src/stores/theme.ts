@@ -3,9 +3,9 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export enum Themes {
-  SYSTEM = 'system',
-  DARK = 'dark',
-  LIGHT = 'light'
+  SYSTEM = 'System',
+  DARK = 'Dark',
+  LIGHT = 'Light'
 }
 
 export const useThemeStore = defineStore('theme', () => {
@@ -26,10 +26,10 @@ export const useThemeStore = defineStore('theme', () => {
 
   useDefaultTheme()
 
-  function toggleTheme() {
+  function toggleTheme(value: Themes) {
+    themes.value = value
     document.body.className = themeStorage.value
     useDefaultTheme()
-    console.log(themeStorage.value)
   }
 
   function toggleDropdown() {

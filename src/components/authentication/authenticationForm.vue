@@ -98,10 +98,6 @@ function submit(event: Event, mode: 'login' | 'register') {
 </template>
 
 <style module>
-button {
-  max-width: min-content;
-}
-
 input {
   border-radius: 4px;
   border: 1.5px solid #77bdfb;

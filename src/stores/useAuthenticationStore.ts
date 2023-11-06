@@ -26,6 +26,5 @@ export const useAuthenticationStore = defineStore('authentication', () => {
       item.isAuth = false
     }
   }
-
   return { isAuthentication, users, addUser, logOut }
 })

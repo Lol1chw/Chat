@@ -2,6 +2,7 @@
 :root {
   --color-background: #fafafa;
   --color-background-paper: #fff;
+  --color-background-hint: ;
   --text-color: #000000de;
   --text-color-secondary: #ffffffb3;
   --text-color-disabled: #ffffff80;
@@ -12,17 +13,19 @@
   --primary-dark: #724fac;
 }
 
-.dark {
+.Dark {
   --color-background: #303030;
   --color-background-paper: #424242;
   --text-color: #ffffff;
+  --primary-dark: #724fac;
 }
 
-.light {
+.Light {
   --text-color: #000000de;
   --text-color-secondary: #0000008a;
   --text-color-disabled: #00000061;
   --text-color-hint: #00000061;
+  --primary-light: #b58df8;
 }
 
 *,
@@ -31,6 +34,11 @@
   box-sizing: border-box;
   margin: 0;
   font-weight: normal;
+}
+
+.router-link-exact-active {
+  font-size: 18px;
+  border-bottom: 2px solid brown;
 }
 
 body {

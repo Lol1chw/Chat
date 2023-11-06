@@ -5,7 +5,7 @@ import LogIn from '@/components/authentication/authenticationForm.vue'
 <template>
   <div :class="$style.Links">
     <RouterLink :to="{ name: 'home' }"> Register </RouterLink>
-    <RouterLink :to="{ name: 'login' }" :class="$style['Links--active']"> Log in </RouterLink>
+    <RouterLink :to="{ name: 'login' }"> Log in </RouterLink>
   </div>
   <LogIn mode="login" />
 </template>
@@ -14,10 +14,5 @@ import LogIn from '@/components/authentication/authenticationForm.vue'
 .Links {
   display: flex;
   gap: 15px;
-}
-
-.Links--active {
-  font-size: 18px;
-  border-bottom: 2px solid brown;
 }
 </style>

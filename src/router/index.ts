@@ -1,6 +1,7 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, useRoute } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { useAuthenticationStore } from '@/stores/useAuthenticationStore'
+import { watch } from 'vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,18 +33,28 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach((to) => {
+router.beforeEach((to, from) => {
   const store = useAuthenticationStore()
   const isAuth = store.isAuthentication.some((value) => value.isAuth)
-
-  if (to.meta.requiresAuth && !isAuth) {
+  if (to.meta.requiresAuth && !isAuth && from.name !== 'chat') {
     return '/'
   }
-
   if (!to.meta.requiresAuth && isAuth) {
-    return '/chat/0'
+    router.push('/chat/0')
   }
-
-  // Guard for logined users
 })
+
+router.afterEach(() => {
+  const { isAuthentication } = useAuthenticationStore()
+  const route = useRoute()
+  watch(isAuthentication, (isAuthentication) => {
+    const isAuth = isAuthentication.find((value) => value.isAuth)
+    if (route.meta.requiresAuth && !isAuth) {
+      if (route.name === 'chat') {
+        router.push('/')
+      }
+    }
+  })
+})
+
 export default router
