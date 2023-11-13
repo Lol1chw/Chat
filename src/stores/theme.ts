@@ -30,6 +30,7 @@ export const useThemeStore = defineStore('theme', () => {
     themes.value = value
     document.body.className = themeStorage.value
     useDefaultTheme()
+    // showDropdown.value = !showDropdown.value
   }
 
   function toggleDropdown() {

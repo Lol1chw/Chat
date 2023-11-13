@@ -2,7 +2,6 @@
 :root {
   --color-background: #fafafa;
   --color-background-paper: #fff;
-  --color-background-hint: ;
   --text-color: #000000de;
   --text-color-secondary: #ffffffb3;
   --text-color-disabled: #ffffff80;
@@ -11,13 +10,15 @@
   --primary-main: #a371f7;
   --primary-light: #b58df8;
   --primary-dark: #724fac;
+  --color-success: #4caf50;
+  --color-error: #f44336;
 }
 
 .Dark {
   --color-background: #303030;
   --color-background-paper: #424242;
   --text-color: #ffffff;
-  --primary-dark: #724fac;
+  --color-primary: var(--primary-dark);
 }
 
 .Light {
@@ -25,7 +26,7 @@
   --text-color-secondary: #0000008a;
   --text-color-disabled: #00000061;
   --text-color-hint: #00000061;
-  --primary-light: #b58df8;
+  --color-primary: var(--primary-light);
 }
 
 *,
@@ -38,7 +39,7 @@
 
 .router-link-exact-active {
   font-size: 18px;
-  border-bottom: 2px solid brown;
+  border-bottom: 2px solid var(--color-border);
 }
 
 body {
@@ -66,4 +67,23 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  background-color: var(--color-background-paper);
+  color: var(--text-color);
+  border-color: #77bdfb;
+  border-radius: 4px;
+  min-width: 80px;
+  min-height: 30px;
+}
+
+input {
+  border-radius: 4px;
+  border: 1.5px solid #77bdfb;
+  background-color: var(--color-background-paper);
+  /* outline: none; */
+  color: var(--text-color);
+  min-height: 32px;
+  max-width: 300px;
 }

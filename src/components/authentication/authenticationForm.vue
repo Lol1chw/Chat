@@ -98,19 +98,10 @@ function submit(event: Event, mode: 'login' | 'register') {
 </template>
 
 <style module>
-input {
-  border-radius: 4px;
-  border: 1.5px solid #77bdfb;
-  background-color: var(--color-background-paper);
-  outline: none;
-  color: var(--text-color);
-  min-height: 32px;
-  max-width: 300px;
-}
-
 .label {
   display: flex;
   flex-direction: column;
+  max-width: 300px;
   margin-bottom: 16px;
   flex: 1;
 }
@@ -121,11 +112,5 @@ input {
 .Error {
   font-size: 14px;
   color: #dc2626;
-}
-
-.Form {
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
 }
 </style>

@@ -4,7 +4,10 @@ import SunThemeIcon from '@/assets/sun-theme-icon.vue'
 import SystemThemeIcon from '@/assets/system-theme-icon.vue'
 import { useThemeStore } from '@/stores/theme'
 import { Themes } from '@/stores/theme'
-import { computed } from 'vue'
+import { useWindowSize } from '@vueuse/core'
+import { computed, ref, watch } from 'vue'
+
+const isMobile = ref(false)
 
 const ThemesWithIcons = {
   Light: {
@@ -33,10 +36,20 @@ const iconTheme = computed(() => {
     return SystemThemeIcon
   }
 })
+
+const { width } = useWindowSize()
+
+watch(width, (width) => {
+  if (width < 500) {
+    isMobile.value = true
+  } else {
+    isMobile.value = false
+  }
+})
 </script>
 
 <template>
-  <button :class="$style['button-theme']" @click="store.toggleDropdown">
+  <button v-if="!isMobile" :class="$style['button-theme']" @click="store.toggleDropdown">
     <component :is="iconTheme"></component>
   </button>
 
@@ -46,13 +59,23 @@ const iconTheme = computed(() => {
         :class="store.themes === theme.color ? $style['list-item--active'] : $style['list-item']"
         role="option"
         :value="theme.color"
+        tabindex="0"
         @click="store.toggleTheme(theme.color)"
+        @keydown.enter.prevent="store.toggleTheme(theme.color)"
       >
         <component :is="theme.icon" />
         {{ theme.color }}
       </li>
     </template>
   </ul>
+
+  <div v-if="isMobile">
+    <select v-model="store.themes" @click="store.toggleTheme(store.themes)">
+      <option :value="Themes.LIGHT">{{ Themes.LIGHT }}</option>
+      <option :value="Themes.DARK">{{ Themes.DARK }}</option>
+      <option :value="Themes.SYSTEM">{{ Themes.SYSTEM }}</option>
+    </select>
+  </div>
 </template>
 
 <style module>
@@ -67,9 +90,12 @@ const iconTheme = computed(() => {
 }
 
 .list {
+  max-width: 100px;
   padding: 0;
   width: fit-content;
   list-style: none;
+  position: absolute;
+  right: 0%;
 }
 
 .list-item {

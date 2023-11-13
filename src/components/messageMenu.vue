@@ -29,7 +29,8 @@ watch(showMessageMenu, (showMessageMenu) => {
     window.addEventListener('keydown', handleEscapePress)
   } else if (showMessageMenu === false) {
     window.removeEventListener('click', onClose)
-    window.addEventListener('keydown', handleEscapePress)
+    window.removeEventListener('keydown', handleEscapePress)
+    store.selectedMessage = null
   }
 })
 </script>
